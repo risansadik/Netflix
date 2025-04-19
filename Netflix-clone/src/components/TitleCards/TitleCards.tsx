@@ -1,10 +1,21 @@
 import './TitleCards.css';
-import cards_data from '../../assets/cards/Cards_data';
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const TitleCards = ({title,category}) => {
+interface Movie {
+  id: number;
+  original_title: string;
+  backdrop_path: string;
+}
 
-  const [apiData,setApiData] = useState([]);
+interface TitleCardsProps {
+  title?: string;
+  category?: string;
+}
+
+const TitleCards = ({title,category} : TitleCardsProps) => {
+
+  const [apiData,setApiData] = useState<Movie[]>([]);
   const cardsRef = useRef<HTMLDivElement>(null);
 
   const options = {
@@ -47,10 +58,10 @@ const TitleCards = ({title,category}) => {
       <h2>{title?title:"Popular on Netflix"}</h2>
       <div className="card-list" ref={cardsRef}>
         {apiData.map((card, index) => (
-          <div className="card" key={index}>
+          <Link to={`/player/${card.id}`} className="card" key={index}>
             <img src={`https://image.tmdb.org/t/p/w500`+card.backdrop_path} alt="" />
             <p>{card.original_title}</p>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
